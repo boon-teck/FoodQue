@@ -3,9 +3,9 @@ import {Container, Nav, Navbar} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 
-function Navigation({auth,setAuth}) {
+function Navigation({auth,setAuth, user}) {
     console.log(auth)
-
+    console.log(typeof user)
     function logout(e) {
         e.preventDefault()
         setAuth(false)
@@ -22,7 +22,7 @@ function Navigation({auth,setAuth}) {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ml-auto">
-                            <Nav.Link as={Link} to="/userprofle"  eventKey="1">Profile</Nav.Link>
+                            <Nav.Link as={Link} to="/userprofle"  eventKey="1">{user}'s Profile</Nav.Link>
                             <Nav.Link as={Link} to="/login" onClick={logout} eventKey="2">Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

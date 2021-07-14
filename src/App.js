@@ -14,31 +14,32 @@ function App() {
     const [auth, setAuth] = useState(false);
     const [user, setUser] = useState(null);
 
-    //useeffect to get user details
-    // useEffect(() => {
+    // useeffect to get user details
+    useEffect(() => {
 
-        // async function userDetails() {
-        //     //not sure if it will work with django
-        //     try {
-        //         let {data} = await Axios.get("/auth/api/user", {
-        //             headers: {
-        //                 authorization: `Bearer ${localStorage.access}`
-        //             }
-        //         })
-        //
-        //         await setAuth(true)
-        //         await setUser(data.user)
-        //     } catch (e) {
-        //         await setAuth(false)
-        //         await setUser(null)
-        //         localStorage.removeItem("access")
-        //     }
-        // }
+        async function userDetails() {
+            //not sure if it will work with django
+            try {
+                let {data} = await Axios.get("http://127.0.0.1:8000/auth/api/user", {
+                    headers: {
+                        authorization: `Bearer ${localStorage.access}`
+                    }
+                })
+                console.log(data)
 
-        // userDetails()
+                await setAuth(true)
+                await setUser(data.username)
+            } catch (e) {
+                await setAuth(false)
+                await setUser(null)
+                localStorage.removeItem("access")
+            }
+        }
+
+        userDetails()
 
 
-    // }, [auth])
+    }, [auth])
 
 
 
@@ -68,7 +69,7 @@ function App() {
                 <Taskerhome auth={auth} exact/>
             </Route>
             <Route path= "*" >
-               Page do not exist yet
+                401 | Page do not exist yet
             </Route>
         </Switch>
     </Router>

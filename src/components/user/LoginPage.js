@@ -69,15 +69,13 @@ export default function Login({setAuth}) {
 
     async function submit(e){
         e.preventDefault()
-        console.log(e)
-        console.log(cred)
         try{
             let {data}= await Axios.post("http://127.0.0.1:8000/auth/api/login/",cred)
             localStorage.setItem("access",data.access)
             localStorage.setItem("refresh",data.refresh)
             // console.log(data)
-            history.push("/tasker/home")
             setAuth(true)
+            history.push("/tasker/home")
         }catch(e){
             console.log(e)
         }
