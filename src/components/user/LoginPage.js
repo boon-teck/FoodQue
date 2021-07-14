@@ -5,7 +5,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
+import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SignIn({setAuth}) {
+export default function Login({setAuth}) {
     const classes = useStyles();
 
    const [values, setValues] = useState({
@@ -73,10 +74,10 @@ export default function SignIn({setAuth}) {
         try{
             let {data}= await Axios.post("http://127.0.0.1:8000/auth/api/login/",cred)
             localStorage.setItem("access",data.access)
+            localStorage.setItem("refresh",data.refresh)
             // console.log(data)
-            // setAuth(true)
-            history.push("/")
-
+            history.push("/tasker/home")
+            setAuth(true)
         }catch(e){
             console.log(e)
         }
@@ -125,7 +126,7 @@ export default function SignIn({setAuth}) {
                         autoFocus
                         onChange={handleChange('username')}
                     />
-                    <FormControl fullWidth variant='outlined' margin="normal">
+                    <FormControl fullWidth variant='outlined' margin="normal" required>
                         <InputLabel variant={'outlined'}>Password</InputLabel>
                         <OutlinedInput
                             autoComplete="current-password"
@@ -145,7 +146,7 @@ export default function SignIn({setAuth}) {
                                     </IconButton>
                                 </InputAdornment>
                             }
-                            labelWidth={70}
+                            labelWidth={80}
                         />
 
                     </FormControl>
@@ -170,7 +171,7 @@ export default function SignIn({setAuth}) {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link to="/register" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>

@@ -14,7 +14,7 @@ import {Row} from "react-bootstrap";
 
 function Taskerhome(props) {
     //http://localhost:3000/tasker/home
-
+    console.log(props.auth)
     const [allTasks, setAllTasks] = useState([])
 
     useEffect(()=> {
@@ -30,6 +30,7 @@ function Taskerhome(props) {
 
         getAllTasks()
     },[])
+
 
     return (
         <>
