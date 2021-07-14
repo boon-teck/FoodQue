@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import {useHistory} from "react-router-dom";
+import Axios from "axios";
 
 function Copyright() {
     return (
@@ -49,6 +51,33 @@ const useStyles = makeStyles((theme) => ({
 export default function Register() {
     const classes = useStyles();
 
+    const [register, setRegister] = useState({})
+
+    let history = useHistory()
+
+    async function submit(e){
+        e.preventDefault()
+        console.log(e)
+        console.log(register)
+        try{
+            let {data}= await Axios.post("http://127.0.0.1:8000/auth/api/register/",register)
+            localStorage.setItem("access",data.access)
+            // console.log(data)
+            // setAuth(true)
+            // history.push("/")
+
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+    const handleChange = (prop) => (event) => {
+        setRegister({ ...register, [prop]: event.target.value });
+    };
+
+    const handleChecked = (prop) => (event) => {
+        setRegister({ ...register, [prop]: event.target.checked });
+    }
 
 
     return (
@@ -61,18 +90,19 @@ export default function Register() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={submit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"
-                                name="firstName"
+                                name="first_name"
                                 variant="outlined"
                                 required
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                onChange={handleChange('first_name')}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -82,8 +112,9 @@ export default function Register() {
                                 fullWidth
                                 id="lastName"
                                 label="Last Name"
-                                name="lastName"
+                                name="last_name"
                                 autoComplete="lname"
+                                onChange={handleChange('last_name')}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -95,6 +126,7 @@ export default function Register() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={handleChange('email')}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -106,6 +138,7 @@ export default function Register() {
                                 label="Username"
                                 type="username"
                                 id="username"
+                                onChange={handleChange('username')}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -117,6 +150,7 @@ export default function Register() {
                                 label="Password"
                                 type="password"
                                 id="password"
+                                onChange={handleChange('password')}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -126,7 +160,7 @@ export default function Register() {
                                 fullWidth
                                 name="password2"
                                 label="Confirm Password"
-                                type="password2"
+                                type="password"
                                 id="password2"
                             />
                         </Grid>
@@ -134,6 +168,7 @@ export default function Register() {
                             <FormControlLabel
                                 control={<Checkbox value="is_tasker" color="primary" />}
                                 label="I want to be a Tasker."
+                                onChange = {handleChecked("is_tasker")}
                             />
                         </Grid>
                     </Grid>

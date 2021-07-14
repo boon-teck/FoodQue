@@ -2,10 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Navigation from './components/navigation/Navigation'
-import Taskerhome from "./components/main_pages/Taskerhome";
-import Test from "./components/main_pages/Test";
-import Register from "./components/main_pages/Register";
-import Login from "./components/main_pages/LoginPage";
+import Taskerhome from "./components/user/Taskerhome";
+import Register from "./components/user/Register";
+import Login from "./components/user/LoginPage";
 
 function App() {
   return (
@@ -20,9 +19,6 @@ function App() {
             </Route>
             <Route path="/register">
                 <Register />
-            </Route>
-            <Route path="/test" exact>
-                <Test />
             </Route>
             <Route path="/tasker/home">
                 <Taskerhome />
