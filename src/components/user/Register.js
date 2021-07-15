@@ -62,9 +62,7 @@ export default function Register() {
         try{
             let {data}= await Axios.post("http://127.0.0.1:8000/auth/api/register/",register)
             localStorage.setItem("access",data.access)
-            // console.log(data)
-            // setAuth(true)
-            // history.push("/")
+            history.push("/login")
 
         }catch(e){
             console.log(e)
