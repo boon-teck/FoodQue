@@ -1,17 +1,21 @@
 import React from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 
 function Navigation({auth,setAuth, user}) {
     console.log(auth)
     console.log(typeof user)
+
+    let history = useHistory()
+
     function logout(e) {
         e.preventDefault()
         setAuth(false)
         // setUser(null)
         localStorage.removeItem("access")
         localStorage.removeItem("refresh")
+        history.push('/')
     }
 
     return (
@@ -22,6 +26,8 @@ function Navigation({auth,setAuth, user}) {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="ml-auto">
+                            <Nav.Link as={Link} to="/user/tasks"  eventKey="1">My requests</Nav.Link>
+                            <Nav.Link as={Link} to="/submit"  eventKey="1">Submit Req</Nav.Link>
                             <Nav.Link as={Link} to="/userprofle"  eventKey="1">{user}'s Profile</Nav.Link>
                             <Nav.Link as={Link} to="/login" onClick={logout} eventKey="2">Logout</Nav.Link>
                         </Nav>

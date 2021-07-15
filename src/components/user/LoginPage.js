@@ -75,7 +75,7 @@ export default function Login({setAuth}) {
             localStorage.setItem("refresh",data.refresh)
             // console.log(data)
             setAuth(true)
-            history.push("/tasker/home")
+            history.push("/user/tasks")
         }catch(e){
             console.log(e)
         }

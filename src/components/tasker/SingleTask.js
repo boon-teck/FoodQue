@@ -1,25 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Container from "@material-ui/core/Container";
-import AddIcon from '@material-ui/icons/Add';
-// import Axios from "../../utilz/Axios";
-import Axios from 'axios';
+import {useParams} from 'react-router-dom'
+import Axios from "axios";
+import CardHeader from "@material-ui/core/CardHeader";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import CardActions from "@material-ui/core/CardActions";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import AddIcon from "@material-ui/icons/Add";
+import clsx from "clsx";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Collapse from "@material-ui/core/Collapse";
+import Card from "@material-ui/core/Card";
+import {makeStyles} from "@material-ui/core/styles";
+import {red} from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
+import SIngleMessage from "./SIngleMessage";
+import {Paper} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,8 +44,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RecipeReviewCard() {
+function SingleTask(props) {
+    const {id} = useParams();
+    console.log(id)
 
+    const [singleTask, setSingleTask] = useState({})
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -53,37 +56,33 @@ export default function RecipeReviewCard() {
         setExpanded(!expanded);
     };
 
-
-    const [allTasks, setAllTasks] = useState([])
-
-    useEffect(()=> {
-        async function getAllTasks() {
+    useEffect(()=>{
+        async function getSingleTask() {
             try {
-                let {data} = await Axios.get("http://127.0.0.1:8000/tasks/",{
-                    headers: {
-                        authorization: `Bearer ${localStorage.access}`
+                let {data} = await Axios.get(`http://127.0.0.1:8000/tasks/show/${id}`,{
+                    headers:{
+                        Authorization: `Bearer ${localStorage.access}`
                     }
                 })
                 console.log(data)
-                setAllTasks(data)
+                setSingleTask(data)
             } catch (e) {
-                console.log(e)
+                console.log(e.response)
             }
         }
+        getSingleTask()
+    },[id])
 
-        getAllTasks()
-    },[])
+    console.log(singleTask)
+    // console.log(singleTask.name_of_task)
 
 
 
 
     return (
-        <div className={classes.root}>
-
-        <Grid container spacing={3}>
-        {allTasks.map((task) => (
-            <Grid>
-            <Card className={classes.root}>
+        <>
+            <div style={{ display:'flex', justifyContent:'center' }}>
+        <Card className={classes.root}>
             <CardHeader
                 avatar={
                     <Avatar aria-label="task" className={classes.avatar}>
@@ -95,8 +94,8 @@ export default function RecipeReviewCard() {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={task.name_of_task}
-                subheader={task.created_at.split('T')[0] +" "+ task.created_at.split('T')[1].split('.')[0]}
+                title={singleTask.name_of_task}
+                subheader={singleTask.created_at?.split('T')[0] +" "+ singleTask.created_at?.split('T')[1].split('.')[0]}
             />
             <CardMedia
                 className={classes.media}
@@ -105,7 +104,16 @@ export default function RecipeReviewCard() {
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    {task.description_to_buy}
+                    {singleTask.description_to_buy}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                    Cost of Food: {singleTask.cost_of_food}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                    Payment: {singleTask.budget}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -128,25 +136,19 @@ export default function RecipeReviewCard() {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography paragraph>Details:</Typography>
-                    <Typography paragraph>
+                    <Typography paragraph>Comments:</Typography>
+                    <SIngleMessage />
+                    <SIngleMessage />
 
-                    </Typography>
-                    <Typography paragraph>
-                        Cost of Food: {task.cost_of_food}
-                    </Typography>
-                    <Typography paragraph>
-                        Payment: {task.budget}
-                    </Typography>
                 </CardContent>
+
             </Collapse>
         </Card>
-        </Grid>
-            ))}
-        {/*</Container>*/}
-            </Grid>
-
             </div>
 
-            );
+
+        </>
+    );
 }
+
+export default SingleTask;

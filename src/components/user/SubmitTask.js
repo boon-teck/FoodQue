@@ -41,6 +41,7 @@ export default function SubmitTask() {
     const classes = useStyles();
 
     const [task, setTask] = useState({})
+    const [page, setPage] = useState(0)
 
     let history = useHistory()
 
@@ -76,7 +77,9 @@ export default function SubmitTask() {
                     Submit Request
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={submit}>
+
                     <Grid container spacing={2}>
+                        {(page === 0) && (<>
                         <Grid item xs={12} sm={12}>
                             <TextField
                                 name="name_of_task"
@@ -91,6 +94,32 @@ export default function SubmitTask() {
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             <TextField
+                                name="buy_from"
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="where_to_buy"
+                                label="Where to Buy"
+                                autoFocus
+                                onChange={handleChange('buy_from')}
+                            />
+                        </Grid></>) }
+
+                        {(page === 1) &&
+                        <><Grid item xs={12} sm={12}>
+                            <TextField
+                                name="deliver_to"
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="deliver_to"
+                                label="Where to Deliver to"
+                                autoFocus
+                                onChange={handleChange('deliver_to')}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                            <TextField
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -100,7 +129,8 @@ export default function SubmitTask() {
                                 autoComplete="description_to_buy"
                                 onChange={handleChange('description_to_buy')}
                             />
-                        </Grid>
+                        </Grid></>}
+                        {(page === 2) && <>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -114,29 +144,30 @@ export default function SubmitTask() {
                                 onChange={handleChange('cost_of_food')}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                            <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="budget"
-                                label="Delivery Fee budget ($)"
-                                type="number"
-                                id="budget"
-                                onChange={handleChange('budget')}
+                            variant="outlined"
+                            required
+                            fullWidth
+                            name="budget"
+                            label="Delivery Fee budget ($)"
+                            type="number"
+                            id="budget"
+                            onChange={handleChange('budget')}
                             />
-                        </Grid>
-                        <Grid item xs={12}>
+                            </Grid>
+                            <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="phone_number"
-                                label="Contact Number"
-                                id="phone_number"
-                                onChange={handleChange('phone_number')}
+                            variant="outlined"
+                            required
+                            fullWidth
+                            name="phone_number"
+                            label="Contact Number"
+                            id="phone_number"
+                            onChange={handleChange('phone_number')}
                             />
-                        </Grid>
+                            </Grid>
+                        </> }
                     </Grid>
                     <Button
                         type="submit"
